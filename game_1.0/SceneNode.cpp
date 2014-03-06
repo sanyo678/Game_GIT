@@ -1,6 +1,8 @@
+#pragma once
 #include "SceneNode.hpp"
 #include <algorithm> //find_if
 #include "assert.h"  //assert()
+#include "Command.hpp"
 
 SceneNode::SceneNode()
 	: mParent(nullptr)
@@ -66,3 +68,18 @@ sf::Transform SceneNode::getWorldTransform() const
 
 	return transform;
 }
+
+unsigned int SceneNode::getCategory() const
+{   
+	return Category::Scene;
+}
+
+void SceneNode::onCommand(const Command& command, sf::Time dt)
+{ 
+	if (command.category & getCategory())     
+		command.action(*this, dt);
+
+	for (auto itr = mChildren.begin(); itr != mChildren.end(); ++itr)
+		(*itr)->onCommand(command,dt);
+}
+

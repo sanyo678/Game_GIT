@@ -11,10 +11,12 @@ private:
 	void	processEvents();
 	void	update(sf::Time dt);
 	void	render();
+	void    processInput(); 
 
 private:
 	sf::RenderWindow	mWindow;
 	World				mWorld;
 	sf::Time			TimePerFrame;
+	bool                mIsPaused;
 };
 
