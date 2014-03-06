@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
@@ -31,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="ActionAdapter.hpp" />
     <ClInclude Include="Command.hpp" />
+    <ClInclude Include="CommandManager.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />

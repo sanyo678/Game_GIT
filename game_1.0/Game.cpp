@@ -14,8 +14,8 @@ void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSincLastUpdate = sf::Time::Zero;
-	Player& mplayer = mWorld.getPlayerRef();
-	mplayer.assignKey();
+	//Player& mplayer = mWorld.getPlayerRef();
+	mManager.assignKey();
 	while (mWindow.isOpen())
 	{
 		processInput();
@@ -51,7 +51,7 @@ void Game::processInput()
 	sf::Event event; 
 	while (mWindow.pollEvent(event)) 
 	{      
-		mPlayer.handleEvent(event, commands);
+		mManager.handleEvent(event, commands);
 
 		if (event.type == sf::Event::GainedFocus)   
 			mIsPaused = false;   
@@ -60,7 +60,7 @@ void Game::processInput()
 		else if (event.type == sf::Event::Closed)   
 			mWindow.close();  
 	}
-	mPlayer.handleRealtimeInput(commands); 
+	mManager.handleRealtimeInput(commands); 
 }
 
 

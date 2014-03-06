@@ -1,11 +1,15 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "World.hpp"
+#include "CommandManager.hpp"
+
 class Game
 {
 public:
-			Game();
-	void	run();
+					Game();
+	void			run();
+
+	CommandManager	mManager; 
 
 private:
 	void	processEvents();

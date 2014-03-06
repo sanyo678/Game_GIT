@@ -54,15 +54,13 @@ void World::update(sf::Time dt)
 
 	while (!mCommandQueue.isEmpty())   
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);		
-	mPlayer->move(mPlayer->getVelocity() * dt.asSeconds());
-	 mPlayer->setVelocity(0.f, 0.f); 	
 	
-	 sf::Vector2f position = mPlayer->getPosition();									       //
-	 position.x = std::max(position.x, viewBounds.left + borderDistance);                      // ограничение игрока 
-	 position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);   // что бы не выходил за границы	
-	 position.y = std::max(position.y, viewBounds.top + borderDistance);                       //
-	 position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);   //
-	 mPlayer->setPosition(position); 
+	 //sf::Vector2f position = mPlayer->getPosition();									       //
+	 //position.x = std::max(position.x, viewBounds.left + borderDistance);                      // ограничение игрока 
+	 //position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);   // что бы не выходил за границы	
+	 //position.y = std::max(position.y, viewBounds.top + borderDistance);                       //
+	 //position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);   //
+	 //mPlayer->setPosition(position); 
 	//-------------------
 	//здесь step() из Box2D. Вроде бы
 	//-------------------

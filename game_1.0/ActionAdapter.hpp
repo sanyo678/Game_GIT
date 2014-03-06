@@ -1,4 +1,5 @@
 #pragma once
+#include <assert.h>
 
 template <typename GameObject, typename Function>
 std::function<void(SceneNode&, sf::Time)>    derivedAction(Function fn)
