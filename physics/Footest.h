@@ -1,28 +1,20 @@
 #pragma once
 
-class FooTest : public Test
-{
-	public:
-
-	enum _moveState
-	{
-    MS_STOP,
-    MS_LEFT,
-    MS_RIGHT,
-	};
-
-	_moveState moveState;
-	b2Body* dynamicBody;
-
-	FooTest()
-	{
-		///////box
+class Player {
+  public:
+    //class member variables
+    b2Body* dynamicBody;
+	 bool	onFloor;
+  
+  public:
+    Player(b2World* world) {
+      ///////box
 		b2BodyDef boxBodyDef;
 		boxBodyDef.type = b2_dynamicBody; //this will be a dynamic body
 		boxBodyDef.position.Set(0, 20); //set the starting position
 		boxBodyDef.angle = 0;
 
-		dynamicBody = m_world->CreateBody(&boxBodyDef);
+		dynamicBody = world->CreateBody(&boxBodyDef);
 		dynamicBody->SetFixedRotation(true);
 		
 		b2CircleShape circleShape;
@@ -43,6 +35,70 @@ class FooTest : public Test
 		boxCircleFixtureDef.friction=10;
 		dynamicBody->CreateFixture(&boxCircleFixtureDef);
 		////
+		onFloor=false;
+		dynamicBody->SetUserData( this );
+    }
+
+	void startContact() {onFloor = true; }
+	void endContact() { onFloor = false; }
+
+    ~Player() {}
+  
+  };
+
+
+ class MyContactListener : public b2ContactListener
+  {
+    void BeginContact(b2Contact* contact) {
+  
+      //check if fixture A was a ball
+      void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+      if ( bodyUserData )
+        static_cast<Player*>( bodyUserData )->startContact();
+  
+      //check if fixture B was a ball
+      bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+      if ( bodyUserData )
+        static_cast<Player*>( bodyUserData )->startContact();
+  
+    }
+  
+    void EndContact(b2Contact* contact) {
+  
+      //check if fixture A was a ball
+      void* bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+      if ( bodyUserData )
+        static_cast<Player*>( bodyUserData )->endContact();
+  
+      //check if fixture B was a ball
+      bodyUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+      if ( bodyUserData )
+        static_cast<Player*>( bodyUserData )->endContact();
+  
+    }
+  };
+
+class FooTest : public Test
+{
+	public:
+
+	MyContactListener myContactListenerInstance;
+
+	enum _moveState
+	{
+    MS_STOP,
+    MS_LEFT,
+    MS_RIGHT,
+	};
+
+	_moveState moveState;
+	//b2Body* dynamicBody;
+	Player* player;
+
+	FooTest()
+	{
+		
+		player = new Player(m_world);
 		
 		//////edge
 		b2BodyDef edgeBodyDef;
@@ -59,6 +115,8 @@ class FooTest : public Test
 		//////moveState
 		moveState = MS_STOP;
 		////
+
+		m_world->SetContactListener(&myContactListenerInstance);
 	}
 	
 void Keyboard(unsigned char key)
@@ -76,9 +134,12 @@ void Keyboard(unsigned char key)
         break;
 		case 'w':
 		{
-			//to change velocity by 10
-			float impulse = dynamicBody->GetMass() * 15;
-			dynamicBody->ApplyLinearImpulse( b2Vec2(0,impulse), dynamicBody->GetWorldCenter(), true );
+			if (player->onFloor)
+			//to change velocity by 15
+			{
+				float impulse = player->dynamicBody->GetMass() * 15;
+				player->dynamicBody->ApplyLinearImpulse( b2Vec2(0,impulse), player->dynamicBody->GetWorldCenter(), true );
+			}
 		}
 		break;
 	    default:
@@ -88,7 +149,7 @@ void Keyboard(unsigned char key)
 
 void Step(Settings* settings)
 	{
-		b2Vec2 vel = dynamicBody->GetLinearVelocity();
+		b2Vec2 vel = player->dynamicBody->GetLinearVelocity();
 	    float desiredVel = 0;
 	    switch ( moveState )
 	    {
@@ -97,8 +158,20 @@ void Step(Settings* settings)
 	      case MS_RIGHT: desiredVel =  10; break;
 	    }
 	    float velChange = desiredVel - vel.x;
-	    float impulse = dynamicBody->GetMass() * velChange; //disregard time factor
-	    dynamicBody->ApplyLinearImpulse( b2Vec2(impulse,0), dynamicBody->GetWorldCenter(), true );
+	    float impulse = player->dynamicBody->GetMass() * velChange; //disregard time factor
+	    player->dynamicBody->ApplyLinearImpulse( b2Vec2(impulse,0), player->dynamicBody->GetWorldCenter(), true );
+
+		if(player->onFloor)
+		{
+			m_debugDraw.DrawString(5, m_textLine, "onFloor : true");
+            m_textLine += 15;
+		}
+		else
+		{
+			m_debugDraw.DrawString(5, m_textLine, "onFloor : false");
+            m_textLine += 15;
+		}
+
 		Test::Step(settings);
 	}
 	
