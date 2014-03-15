@@ -18,6 +18,7 @@ void Game::run()
 	mManager.assignKey();
 	while (mWindow.isOpen())
 	{
+
 		processInput();
 		timeSincLastUpdate += clock.restart();
 		while (timeSincLastUpdate > TimePerFrame)
@@ -26,7 +27,7 @@ void Game::run()
 			if (!mIsPaused)    
 				update(TimePerFrame);
 		}
-		render();   
+		render(); 
 		 				
 	}
 }
@@ -40,6 +41,13 @@ void Game::update(sf::Time dt)
 void Game::render()
 {
 	mWindow.clear();
+	//
+		  std::vector<sf::Vertex> vertices;
+		  vertices.push_back(sf::Vertex(sf::Vector2f(10, 50), sf::Color::Red));
+		  vertices.push_back(sf::Vertex(sf::Vector2f(70, 50), sf::Color::Green));
+		  vertices.push_back(sf::Vertex(sf::Vector2f(70, 100), sf::Color::Blue));
+		  mWindow.draw(&vertices[0], vertices.size(), sf::Triangles);
+		//
 	mWorld.draw();
 	mWindow.display();
 }

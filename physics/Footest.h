@@ -1,4 +1,5 @@
 #pragma once
+#include "Testbed/Tests/Ground.hpp"
 
 class Player {
   public:
@@ -94,23 +95,34 @@ class FooTest : public Test
 	_moveState moveState;
 	//b2Body* dynamicBody;
 	Player* player;
+	Ground* ground;
 
 	FooTest()
 	{
 		
 		player = new Player(m_world);
+
+		b2Vec2 a(-20,0);
+		b2Vec2 b(-11,4);
+		ground = new Ground( a, b, m_world);
+
+		ground->edges.push_back(b2Vec2(-11.0, 4.0));
+		ground->edges.push_back(b2Vec2(-9.0, 6.0));
+		ground->edges.push_back(b2Vec2(-6.0, 4.0));
+		ground->edges.push_back(b2Vec2(-1.0, 6.0));
+		ground->edges.push_back(b2Vec2(3.0, 4.0));
+		ground->edges.push_back(b2Vec2(7.0, 3.0));
+		ground->edges.push_back(b2Vec2(8.0, 4.0));
+		ground->edges.push_back(b2Vec2(10.0, 5.0));
+		ground->edges.push_back(b2Vec2(12.0, 3.0));
 		
-		//////edge
-		b2BodyDef edgeBodyDef;
-		edgeBodyDef.type = b2_staticBody;
-  
-		b2FixtureDef edgeFixtureDef;
-		b2EdgeShape edgeShape;
-		edgeShape.Set( b2Vec2(-20,0), b2Vec2(20,10) );
-		edgeFixtureDef.shape = &edgeShape;
-		b2Body* staticBody = m_world->CreateBody(&edgeBodyDef);
-		staticBody->CreateFixture(&edgeFixtureDef); //add a fixture to the body
-		////
+		ground->build(m_world);
+
+		ground->makeHole(b2Vec2(3.0,4.0),3.0f);
+		ground->makeHole(b2Vec2(8.0,4.0),2.0f);
+		ground->makeHole(b2Vec2(6.0,0.0),3.0f);
+
+		ground->build(m_world);
 
 		//////moveState
 		moveState = MS_STOP;
@@ -171,6 +183,8 @@ void Step(Settings* settings)
 			m_debugDraw.DrawString(5, m_textLine, "onFloor : false");
             m_textLine += 15;
 		}
+
+		
 
 		Test::Step(settings);
 	}
