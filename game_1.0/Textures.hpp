@@ -7,6 +7,7 @@ namespace Textures
 	enum ID
 	{
 		Player,
+		Ground,
 	};
 }
 

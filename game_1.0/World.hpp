@@ -5,6 +5,9 @@
 #include "Player.hpp"
 #include "CommandQueue.hpp"
 #include <array>
+#include "Ground.hpp"
+#include "Camera.hpp"
+
 #define PlayerSpeed 70.f
 
 class World
@@ -30,13 +33,14 @@ private:
 
 private:
 	sf::RenderWindow&					mWindow;
-	sf::View							mWorldView;		
+	Camera*								mCamera;
 	TextureHolder						mTextures;		//см ResourceHolder.hpp + Textures.hpp
 	SceneNode							mSceneGraph;	//корень дерева объектов
 	std::array<SceneNode*, LayerCount>	mSceneLayers;	//корни слоев
 	sf::FloatRect						mWorldBounds;	//границы мира, нужно заменить на эквивалент из Box2D
 	sf::Vector2f						mSpawnPosition;	//нужно заменить на эквивалент из Box2D
 	Player*								mPlayer;		//персонаж
+	Ground*								mGround;
 	CommandQueue                        mCommandQueue;  //очередь комманд
 };
 

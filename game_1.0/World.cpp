@@ -4,26 +4,28 @@
 
 World::World(sf::RenderWindow& window):
 	mWindow(window),
-	mWorldView(window.getDefaultView()),
 	mWorldBounds(
-	0.f,
-	0.f,
-	mWorldView.getSize().x,
-	mWorldView.getSize().y),
+		0.f,
+		0.f,
+		4097.0f,
+		705.0f),
 	mSpawnPosition(
-	mWorldView.getSize().x / 2.f,
-	mWorldView.getSize().y / 2.f),
-	mPlayer(nullptr)
+		100,
+		100),
+	mPlayer(nullptr),
+	mCamera(new Camera( sf::View() ))
 {
+	mCamera->view.reset(sf::FloatRect(mSpawnPosition.x,mSpawnPosition.y, 800, 600));
+	mCamera->view.setCenter( mSpawnPosition.x,mSpawnPosition.y);
+	mWindow.setView(mCamera->view);
 	loadTextures();
 	buildScene();
-
-	mWorldView.setCenter(mSpawnPosition);
 }
 
 void World::loadTextures()
 {
 	mTextures.load(Textures::Player, "media/Textures/testPlayer.png");
+	mTextures.load(Textures::Ground, "media/Textures/ground1.png");
 }
 
 void World::buildScene()
@@ -38,29 +40,26 @@ void World::buildScene()
 	mPlayer = player.get();
 	mPlayer->setPosition(mSpawnPosition);					    //нужно заменить на эквивалент из Box2D
 	mSceneLayers[Frontside]->attachChild(std::move(player));
+
+	std::unique_ptr<Ground> ground(new Ground(mTextures));
+	mGround = ground.get();
+	mSceneLayers[Background]->attachChild(std::move(ground));
+
+	mCamera->setTarget(mPlayer);
 }
 
 void World::draw()
 {
-	//mWindow.setView(mWorldView);	//пока не нужно
-	mWindow.draw(mSceneGraph);	//Draw a drawable(!) object to the render-target(смотри sfml-dev.org)
+	mWindow.setView(mCamera->view);
+	mWindow.draw(mSceneGraph);	//Draw a drawable(!) object to the render-target(смотри sfml-dev.org)	с учетом view
 }
 
 void World::update(sf::Time dt)
 {    
-	sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f,
-		mWorldView.getSize());
-	const float borderDistance = 70.f; //подкорректировать под текстуру игрока
-
 	while (!mCommandQueue.isEmpty())   
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);		
 	
-	 //sf::Vector2f position = mPlayer->getPosition();									       //
-	 //position.x = std::max(position.x, viewBounds.left + borderDistance);                      // ограничение игрока 
-	 //position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);   // что бы не выходил за границы	
-	 //position.y = std::max(position.y, viewBounds.top + borderDistance);                       //
-	 //position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);   //
-	 //mPlayer->setPosition(position); 
+	mCamera->update();
 	//-------------------
 	//здесь step() из Box2D. Вроде бы
 	//-------------------
