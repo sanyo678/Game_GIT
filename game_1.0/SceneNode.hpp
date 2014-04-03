@@ -1,7 +1,11 @@
 #pragma once  
-#include <memory>
-#include <vector>
-#include "SFML/Graphics.hpp"
+//#include <memory>
+//#include <vector>
+////#include "SFML/Graphics.hpp"
+////#include "Box2D/Box2d.h"
+//#include <algorithm> //find_if
+//#include "assert.h"
+
 
 
 struct Command;
@@ -14,7 +18,9 @@ public:
 	typedef std::unique_ptr<SceneNode> Ptr;
 
 public:
-	SceneNode(void);
+					SceneNode(b2World*);
+	b2World*		pWorld;
+	b2Vec2			position;
 
 	void			attachChild(Ptr Child);
 	Ptr				detachChild(const SceneNode& node);

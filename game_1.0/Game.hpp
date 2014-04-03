@@ -1,7 +1,7 @@
 #pragma once
-#include "SFML/Graphics.hpp"
-#include "World.hpp"
-#include "CommandManager.hpp"
+//#include "SFML/Graphics.hpp"
+//#include "World.hpp"
+//#include "CommandManager.hpp"
 
 class Game
 {
@@ -12,7 +12,7 @@ public:
 	CommandManager	mManager; 
 
 private:
-	void	processEvents();
+	//void	processEvents();
 	void	update(sf::Time dt);
 	void	render();
 	void    processInput(); 

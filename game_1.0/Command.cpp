@@ -1,5 +1,4 @@
-#pragma once
-#include "Command.hpp"
+#include "headers.hpp"
 
 Command::Command()
 {

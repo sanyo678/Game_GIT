@@ -1,5 +1,4 @@
-#pragma once
-#include "CommandQueue.hpp"
+#include "headers.hpp"
 
 void CommandQueue::push(const Command& command)
 {

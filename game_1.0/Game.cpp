@@ -1,5 +1,4 @@
-#pragma once
-#include "Game.hpp"
+#include "headers.hpp"
 
 
 Game::Game()
@@ -14,7 +13,6 @@ void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSincLastUpdate = sf::Time::Zero;
-	//Player& mplayer = mWorld.getPlayerRef();
 	mManager.assignKey();
 	while (mWindow.isOpen())
 	{
@@ -47,7 +45,7 @@ void Game::render()
 
 void Game::processInput() 
 {   
-	Player& mPlayer = mWorld.getPlayerRef();
+	//Player& mPlayer = mWorld.getPlayerRef();
 	CommandQueue& commands = mWorld.getCommandQueue();
 	sf::Event event; 
 	while (mWindow.pollEvent(event)) 

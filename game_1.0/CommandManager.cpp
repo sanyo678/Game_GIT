@@ -1,21 +1,17 @@
-#include "CommandManager.hpp"
-#include "ActionAdapter.hpp"
-#include "PlayerMover.hpp"
+#include "headers.hpp"
+//#include "PlayerMover.hpp"
+//#include "ActionAdapter.hpp"
 
 
 CommandManager::CommandManager(void)
 {
-	mKeyBinding[sf::Keyboard::A] = MoveLeft; 
-	mKeyBinding[sf::Keyboard::D] = MoveRight;
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::A, MoveLeft));
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::A, Stop));
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::D, MoveRight));
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::D, Stop));
 
-	mActionBinding[MoveLeft].action =    [] (SceneNode& node, sf::Time dt)
-	{
-		node.move(-playerSpeed * dt.asSeconds(), 0.f);   
-	};
-	mActionBinding[MoveRight].action =  [] (SceneNode& node, sf::Time dt) 
-	{
-		node.move(playerSpeed * dt.asSeconds(), 0.f);  
-	};
+	mActionBinding[MoveLeft].action = derivedAction<Player>(PlayerMover(-10.f,0.f));
+	mActionBinding[MoveRight].action = derivedAction<Player>(PlayerMover(10.f,0.f));
 
 	for(auto& pair: mActionBinding)     
 		pair.second.category = Category::RedPlayer;
@@ -39,7 +35,19 @@ void CommandManager::handleEvent(const sf::Event& event, CommandQueue& commands)
 		if (event.type == sf::Event::KeyReleased && event.key.code == (pair.first) 
 			&& (!(isRealtimeAction(pair.second))) )  
 			commands.push(mActionBinding[pair.second]); 
-	}  	
+	}
+	
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		Command fireAllow;
+		fireAllow.category = Category::RedPlayer;
+		fireAllow.action = derivedAction<Player>( [] (Player& player, sf::Time dt)
+		{
+			player.isFiring = true;
+		});
+		commands.push(fireAllow);
+	}
+	//push fire-command here
 }
 
 bool CommandManager::isRealtimeAction(Action act)
@@ -61,12 +69,14 @@ sf::Keyboard::Key  CommandManager::getAssignedKey(Action action) const
 
 void CommandManager::assignKey()
  {
-	mKeyBinding[sf::Keyboard::Unknown] = EndRealtimeactions;
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Unknown, EndRealtimeactions));
+	//mKeyBinding[sf::Keyboard::Unknown] = EndRealtimeactions;
 	mActionBinding[EndRealtimeactions].action = derivedAction<Player>(PlayerMover(0.f,0.f));
 	mActionBinding[EndRealtimeactions].category = Category::None;
 
-	mKeyBinding[sf::Keyboard::Space] = Jump;
-	mActionBinding[Jump].action = derivedAction<Player>(PlayerMover(0.f,-100.f));	
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Space, Jump));
+	//mKeyBinding[sf::Keyboard::Space] = Jump;
+	mActionBinding[Jump].action = derivedAction<Player>(PlayerJump(0.f, 10.f));	
 	mActionBinding[Jump].category = Category::RedPlayer;
 
 

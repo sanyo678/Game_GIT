@@ -1,17 +1,19 @@
 #pragma once
-#include "Player.hpp"
-#include "ActionAdapter.hpp"
+
+//#include "Player.hpp"
+// #include "convertions.hpp"
+
 
 struct PlayerMover
 {
-	PlayerMover(float vx, float vy)  
-		: velocity(vx, vy)
-	{};
-
-	void	operator()(Player& player, sf::Time dt) const 
-	{
-		player.setVelocity(player.getVelocity() + velocity);
-	};
-
-	sf::Vector2f	velocity; 
+					PlayerMover(float vx, float vy); 
+	void			operator()(Player& player, sf::Time dt) const ;
+	b2Vec2			velocity; 
 }; 
+
+struct PlayerJump
+{
+					PlayerJump(float vx, float vy);
+	void			operator()(Player& player, sf::Time dt) const;
+	b2Vec2			velocity; 
+};

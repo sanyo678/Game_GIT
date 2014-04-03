@@ -1,11 +1,12 @@
-#pragma once
-#include "SceneNode.hpp"
-#include <algorithm> //find_if
-#include "assert.h"  //assert()
-#include "Command.hpp"
+#include "headers.hpp"
+//#include "Command.hpp"
+//#include "convertions.hpp"
+  //assert()
 
-SceneNode::SceneNode()
-	: mParent(nullptr)
+
+SceneNode::SceneNode(b2World* _pWorld)
+	: mParent(nullptr),
+	pWorld(_pWorld)
 {
 }
 
