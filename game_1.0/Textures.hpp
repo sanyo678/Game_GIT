@@ -10,7 +10,11 @@ namespace Textures
 		Ground,
 		TNT,       //--------------------
 		Bullet,    // Текстуры снарядов
-		Rocket
+		Missle,
+		Sky,
+		Enemy1,
+		Enemy2,
+		Explosion
 	};
 }
 

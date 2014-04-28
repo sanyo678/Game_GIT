@@ -1,22 +1,22 @@
 #include "headers.hpp"
 
 
-Projectile::Projectile(Type type, const TextureHolder& texture, float _angle, b2World* _pWorld):
+Projectile::Projectile(Type type, b2World* _pWorld, b2Vec2 pos, b2Vec2 dir, const TextureHolder& textures, SceneNode* _expH):
 	SceneNode(_pWorld),
+	expHolder(_expH),
+	Table(initializeProjectileData()),
 	mType(type), 
-	Angle(_angle),
-	mSprite(texture.get(Table[type].texture))	
+	mDirection(dir),
+	mSprite(textures.get(Table[type].texture)),
+	mTextures(textures)
 {
 	//Box2D part
-
+	Table[type].buildBody(*this, pos, dir);
+	projBody -> SetUserData(this);
+	projBody->ApplyLinearImpulse( Table[mType].StartVelocity*dir, projBody->GetWorldCenter(), true );
 	//SFML part
 	sf::FloatRect bounds = mSprite.getLocalBounds();
-	mSprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-}
-
-unsigned int Projectile::getCategory() const
-{
-	return Category::Type::Projectile;
+	mSprite.setOrigin(bounds.width - 3, bounds.height / 2.f);
 }
 
  float Projectile::getDamage() const
@@ -24,14 +24,15 @@ unsigned int Projectile::getCategory() const
 	 return Table[mType].Damage;
  }
 
- sf::Vector2f    Projectile::getStartVelocity() const
+ Projectile::Type Projectile::getType() const
  {
-	 return Table[mType].StartVelocity;
+	 return mType;
  }
 
- float Projectile::getAngle() const
+
+ unsigned int Projectile::getCategory() const
  {
-	 return Angle;
+	 return Category::Projectile;
  }
 
  void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -39,16 +40,51 @@ unsigned int Projectile::getCategory() const
 	 target.draw(mSprite, states);
  }
 
- void Projectile::UpdateCurrent(sf::Time dt, CommandQueue& command)
+ void Projectile::updateCurrent(sf::Time dt)
  {
+	typedef float positiveAngle;
+	positiveAngle getPositiveAngle(b2Vec2 a, b2Vec2 b);	
+
+	 //remove this to child class
+	b2Vec2 missleVel = projBody->GetLinearVelocity();
+		float a = projBody->GetAngle();
+		if (missleVel.x != 0 || missleVel.y !=0)
+		{
+			float dPhi = getPositiveAngle(b2Vec2(1,0), missleVel);
+			projBody->SetTransform(projBody->GetPosition(), dPhi - b2_pi/2);
+			a = projBody->GetAngle();
+
+		}
+	//------------
+	position = projBody->GetPosition();
+	setPosition(b2ToSfmlVec(position)-sf::Vector2f(0,0));
+	rotation = projBody->GetAngle() - b2_pi/2;
+	setRotation(180 - (rotation)*57.7);
+
+	if (position.x > 200 && position.x < 0 && position.y < 0 && position.y > 74)
+		isDead = true;
+
+	if (isDead && mType == Type::Missle)
+	{
+		QueryCallback qc;
+		b2AABB aabb;
+		b2Vec2 lower(position.x-1.5, position.y-1.5);
+		b2Vec2 upper(position.x+1.5, position.y+1.5);
+		aabb.lowerBound = lower;
+		aabb.upperBound = upper;
+		pWorld -> QueryAABB(&qc, aabb); 
+	}
 
  }
 
- void Projectile::Fire()
+ Projectile::~Projectile()
  {
-	/*sf::Vector2i vect = sf::Mouse::getPosition(this->mWindow);		
-    sf::Transform transform = this->getWorldTransform();
-	sf::Vector2f  ProjPosition = transform.transformPoint(0,0);
-	sf::Vector2f temp(vect.x-ProjPosition.x, ProjPosition.y-vect.y);
-	 this->Angle=atan(temp.y/temp.x);	*/  
+	 if (mType == Type::Missle)
+	 {
+		std::unique_ptr<Explosion> exp(new Explosion(pWorld, position, mTextures));
+		Explosion* newExplosion = exp.get();
+		newExplosion->setPosition(b2ToSfmlVec(position).x,b2ToSfmlVec(position).y);
+		expHolder->attachChild(std::move(exp));
+	 }
+	 pWorld -> DestroyBody(projBody);
  }

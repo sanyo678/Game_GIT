@@ -22,17 +22,24 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="ContactListener.cpp" />
     <ClCompile Include="convertions.cpp" />
     <ClCompile Include="DataTables.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMover.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ProjectileHolder.cpp" />
+    <ClCompile Include="QueryCallback.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="TextNode.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Wreck.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionAdapter.hpp" />
@@ -41,19 +48,27 @@
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandManager.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
+    <ClInclude Include="ContactListener.hpp" />
     <ClInclude Include="convertions.hpp" />
     <ClInclude Include="DataTables.hpp" />
+    <ClInclude Include="Enemy.hpp" />
+    <ClInclude Include="Explosion.hpp" />
+    <ClInclude Include="Fonts.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Ground.hpp" />
     <ClInclude Include="headers.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="PlayerMover.hpp" />
     <ClInclude Include="Projectile.hpp" />
+    <ClInclude Include="ProjectileHolder.hpp" />
+    <ClInclude Include="QueryCallback.hpp" />
     <ClInclude Include="ResourceHolder.hpp" />
     <ClInclude Include="ResourceHolderImpl.hpp" />
     <ClInclude Include="SceneNode.hpp" />
+    <ClInclude Include="TextNode.hpp" />
     <ClInclude Include="Textures.hpp" />
     <ClInclude Include="World.hpp" />
+    <ClInclude Include="Wreck.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D2BBE9A8-5E0A-487D-9012-330AD1122CB6}</ProjectGuid>

@@ -14,7 +14,7 @@ CommandManager::CommandManager(void)
 	mActionBinding[MoveRight].action = derivedAction<Player>(PlayerMover(10.f,0.f));
 
 	for(auto& pair: mActionBinding)     
-		pair.second.category = Category::RedPlayer;
+		pair.second.category = Category::Player;
 }
 
 void CommandManager::handleRealtimeInput(CommandQueue& commands) 
@@ -40,7 +40,8 @@ void CommandManager::handleEvent(const sf::Event& event, CommandQueue& commands)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		Command fireAllow;
-		fireAllow.category = Category::RedPlayer;
+		fireAllow.category = Category::Player;
+		//fireAllow.name = "fire";
 		fireAllow.action = derivedAction<Player>( [] (Player& player, sf::Time dt)
 		{
 			player.isFiring = true;
@@ -77,8 +78,12 @@ void CommandManager::assignKey()
 	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Space, Jump));
 	//mKeyBinding[sf::Keyboard::Space] = Jump;
 	mActionBinding[Jump].action = derivedAction<Player>(PlayerJump(0.f, 10.f));	
-	mActionBinding[Jump].category = Category::RedPlayer;
+	mActionBinding[Jump].category = Category::Player;
 
+	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Q, ChangeWeapon));
+	//mKeyBinding[sf::Keyboard::Space] = Jump;
+	mActionBinding[ChangeWeapon].action = derivedAction<Player>(PlayerChangeWeapon());	
+	mActionBinding[ChangeWeapon].category = Category::Player;
 
  }
 

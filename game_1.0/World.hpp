@@ -26,12 +26,15 @@ public:
 private:
 	void			loadTextures();
 	void			buildScene();
+	void			addEnemy();
 
 private:
 	enum Layer
 	{
 		Background,		  //задний план
 		Frontside,		  //передний план
+		Projectiles,      //missles etc.
+		Wrecks,
 		LayerCount
 	};
 
@@ -46,5 +49,6 @@ private:
 	Player*								mPlayer;		//персонаж
 	Ground*								mGround;
 	CommandQueue                        mCommandQueue;  //очередь комманд
+	float								enemyCountDown;
 };
 

@@ -15,12 +15,13 @@ private:
 	//void	processEvents();
 	void	update(sf::Time dt);
 	void	render();
-	void    processInput(); 
+	void    processInput(sf::Time dt); 
 
 private:
 	sf::RenderWindow	mWindow;
 	World				mWorld;
 	sf::Time			TimePerFrame;
+	float				countdown;
 	bool                mIsPaused;
 };
 

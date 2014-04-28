@@ -2,10 +2,11 @@
 
 
 Game::Game()
-	:mWindow(sf::VideoMode(800, 600), "Game_v_1.0", sf::Style::Close),	
+	:mWindow(sf::VideoMode(960, 720), "Game_v_1.0", sf::Style::Close),	
 	mWorld(mWindow),
 	TimePerFrame(sf::seconds(1.f/60.f)),
-	mIsPaused(false)
+	mIsPaused(false),
+	countdown(0.2)
 {
 }
 
@@ -16,8 +17,7 @@ void Game::run()
 	mManager.assignKey();
 	while (mWindow.isOpen())
 	{
-
-		processInput();
+		processInput(timeSincLastUpdate);
 		timeSincLastUpdate += clock.restart();
 		while (timeSincLastUpdate > TimePerFrame)
 		{
@@ -43,11 +43,14 @@ void Game::render()
 	mWindow.display();
 }
 
-void Game::processInput() 
+void Game::processInput(sf::Time dt) 
 {   
-	//Player& mPlayer = mWorld.getPlayerRef();
 	CommandQueue& commands = mWorld.getCommandQueue();
-	sf::Event event; 
+	sf::Event event;
+	countdown-=dt.asSeconds();
+	if (countdown >= 0.0)
+		return;
+	countdown = 0.2;
 	while (mWindow.pollEvent(event)) 
 	{      
 		mManager.handleEvent(event, commands);

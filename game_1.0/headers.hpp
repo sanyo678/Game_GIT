@@ -11,12 +11,15 @@
 #include <iostream>
 #include <fstream>	 
 #include <math.h>
+#include "time.h"
+#include "Windows.h"
 #include <exception>	  
 #include "Box2D/Box2D.h"
 #include "SFML/System.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/Config.hpp"
+#include <string>
 
 //////////////////
 
@@ -31,15 +34,27 @@
 #include "ResourceHolder.hpp"
 #include "ResourceHolderImpl.hpp"
 #include "Textures.hpp"
+#include "Fonts.hpp"
 #include "DataTables.hpp"
-#include "Projectile.hpp"
 #include "Ground.hpp"
+#include "Projectile.hpp"
+#include "ProjectileHolder.hpp"
+#include "TextNode.hpp"
 #include "Player.hpp"
 #include "World.hpp"
 #include "Game.hpp"
 #include "PlayerMover.hpp"
+#include "ContactListener.hpp"
+#include "Wreck.hpp"
+#include "Enemy.hpp"
+#include "QueryCallback.hpp"
+#include "Explosion.hpp"
+
+
 
 
 
 /////////////////////////
+
+#define SCALE 50 //px to meter
 

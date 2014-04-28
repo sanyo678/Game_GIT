@@ -1,12 +1,12 @@
 #include "headers.hpp"
-//#include "Command.hpp"
-//#include "convertions.hpp"
-  //assert()
+
 
 
 SceneNode::SceneNode(b2World* _pWorld)
 	: mParent(nullptr),
-	pWorld(_pWorld)
+	pWorld(_pWorld),
+	isDead(false),
+	explosionImpulse(0,0)
 {
 }
 
@@ -82,5 +82,18 @@ void SceneNode::onCommand(const Command& command, sf::Time dt)
 
 	for (auto itr = mChildren.begin(); itr != mChildren.end(); ++itr)
 		(*itr)->onCommand(command,dt);
+}
+
+bool SceneNode::isToKill()	 const
+{
+	return isDead;
+}
+
+void SceneNode::removeDead()
+{
+	auto deadFieldBegin = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isToKill));
+	mChildren.erase(deadFieldBegin, mChildren.end());
+
+	std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeDead));
 }
 

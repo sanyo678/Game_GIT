@@ -16,17 +16,21 @@ class SceneNode : public sf::Transformable,
 {
 public:
 	typedef std::unique_ptr<SceneNode> Ptr;
-
-public:
 					SceneNode(b2World*);
 	b2World*		pWorld;
 	b2Vec2			position;
+	float			rotation;
+	bool			isDead;
+	b2Vec2			playerPos;
+	b2Vec2			explosionImpulse;
 
 	void			attachChild(Ptr Child);
 	Ptr				detachChild(const SceneNode& node);
 	void			update(sf::Time dt);
 	virtual unsigned int    getCategory() const;
 	void            onCommand(const Command& command, sf::Time dt);
+	void            removeDead();
+	bool			isToKill() const;
 
 private:
 	virtual void	draw(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -35,7 +39,7 @@ private:
 	void			updateChildren(sf::Time dt);
 	sf::Transform	getWorldTransform() const;
 
-private:
+protected:
 	std::vector<Ptr>	mChildren;
 	SceneNode*			mParent;	
 };

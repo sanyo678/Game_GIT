@@ -26,3 +26,19 @@ void PlayerJump::operator()(Player& player, sf::Time dt) const
 		player.body->ApplyLinearImpulse( b2Vec2(0,impulse), player.body->GetWorldCenter(), true );
 	}
 }
+
+PlayerChangeWeapon::PlayerChangeWeapon()  
+{
+}
+
+void PlayerChangeWeapon::operator()(Player& player, sf::Time dt) const
+{
+	if (player.currentProj == Projectile::Type::Missle)
+	{
+		player.currentProj = Projectile::Type::Bullet;
+	}
+	else
+	{
+		player.currentProj = Projectile::Type::Missle;
+	}
+}

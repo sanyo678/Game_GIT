@@ -15,7 +15,8 @@ public:
 		MoveRight,
 		EndRealtimeactions,
 		Stop,
-		Jump
+		Jump,
+		ChangeWeapon
 	};
 
 	typedef	std::multimap<sf::Keyboard::Key, CommandManager::Action> keyActionMap;

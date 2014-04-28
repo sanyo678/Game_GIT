@@ -6,29 +6,28 @@ public:
 	enum Type
 	{
 		Bullet = 0,
-		Rocket,
+		Missle,
 		TNT,
 		TypeCount,
 
 	};
 public:
-  explicit				 Projectile(Type, const TextureHolder&, float, b2World*);
+	explicit									Projectile(Type, b2World*, b2Vec2, b2Vec2, const TextureHolder&, SceneNode*);
+	virtual unsigned int						getCategory() const;
+	float										getDamage() const;
+	Type										getType() const;
+												~Projectile();
 
-  virtual unsigned int   getCategory()           const;
-  float                  getDamage()             const;
-  float                  getAngle()              const;
-  sf::Vector2f           getStartVelocity()      const;
-  void				     Fire();
-
-  const std::vector<ProjectileData>				Table;
+	std::vector<ProjectileData>					Table;
+	b2Body*										projBody;
+	SceneNode*									expHolder;
+	const TextureHolder&						mTextures;
   
 private:
-  virtual void           UpdateCurrent(sf::Time dt, CommandQueue& command);
-  virtual void	         drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void								updateCurrent(sf::Time dt);
+	virtual void								drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
-
-private:
-	sf::Sprite								mSprite;
-	Type									mType;
-	float									Angle;        //значение угла под которым вылетает снар€д. Ќужно дл€ Box2d 
+	sf::Sprite									mSprite;
+	Type										mType;
+	b2Vec2										mDirection;   
 };
