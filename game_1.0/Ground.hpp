@@ -1,8 +1,4 @@
 #pragma once
-//#include "SFML/Graphics.hpp"
-//#include "Textures.hpp"
-//#include "SceneNode.hpp"
-//#include <list>
 
 class Ground : public SceneNode
 {
@@ -45,6 +41,7 @@ public:
 	virtual unsigned int    getCategory() const;
 	void					explosion(b2Vec2, float);
 	void					makeWrecks();
+	void					destroyPhysBody();
 							
 
 private:

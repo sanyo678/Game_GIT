@@ -1,7 +1,5 @@
 //шаблон класса для автоматизированного хранения ресурсов
 #pragma once
-//#include <memory>
-//#include <assert.h>
 
 template <typename Resource, typename Identifier> //<тип ресурса(sf::Texture, sf::Sound, sf::Font), идентификатор ресурса(предположительно enum)>
 class ResourceHolder

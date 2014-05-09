@@ -1,8 +1,4 @@
 #pragma once
-//#include <map>
-
-//#include "SFML/Graphics.hpp"
-//#include "CommandQueue.hpp"
 	
 #define  playerSpeed   3.f
 

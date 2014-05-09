@@ -38,7 +38,6 @@
 #include "DataTables.hpp"
 #include "Ground.hpp"
 #include "Projectile.hpp"
-#include "ProjectileHolder.hpp"
 #include "TextNode.hpp"
 #include "Player.hpp"
 #include "World.hpp"
@@ -49,10 +48,6 @@
 #include "Enemy.hpp"
 #include "QueryCallback.hpp"
 #include "Explosion.hpp"
-
-
-
-
 
 /////////////////////////
 

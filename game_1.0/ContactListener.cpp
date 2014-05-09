@@ -7,12 +7,17 @@ void ContactListener::BeginContact(b2Contact* contact)
 	SceneNode* B = static_cast<SceneNode*> (contact -> GetFixtureB() -> GetBody() -> GetUserData() );
 
 	if (A -> getCategory() == Category::Projectile && contact->IsTouching())
-		A->isDead = true;
-
+	{
+		Projectile* proj = static_cast<Projectile*>(A);
+		proj->isDead = true;
+	}
 						 
 	if (B -> getCategory() == Category::Projectile && contact->IsTouching())
-		B->isDead = true;
-	
+	{
+		Projectile* proj = static_cast<Projectile*>(B);
+		proj->isDead = true;
+	}
+
 	if (contact->IsTouching() &&  //projectile - ground
 		(A -> getCategory() == Category::Projectile || B -> getCategory() == Category::Projectile) &&
 		(A -> getCategory() == Category::Ground || B -> getCategory() == Category::Ground))

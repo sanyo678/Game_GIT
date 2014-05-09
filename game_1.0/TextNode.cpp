@@ -2,7 +2,8 @@
 
 
 TextNode::TextNode(b2World* _pw, const FontHolder& fonts, const std::string& text)
-	:SceneNode(_pw)
+	:SceneNode(_pw),
+	lifetime(0.0)
 {
 	mText.setFont(fonts.get(Fonts::main));
 	mText.setCharacterSize(30);
@@ -18,7 +19,6 @@ void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 void TextNode::setString(const std::string& text)
 {
 	mText.setString(text);
-	//centerOrigin(mText);
 }
 
 TextNode::~TextNode(void)

@@ -1,7 +1,4 @@
 #include "headers.hpp"
-//#include "PlayerMover.hpp"
-//#include "ActionAdapter.hpp"
-
 
 CommandManager::CommandManager(void)
 {
@@ -41,14 +38,12 @@ void CommandManager::handleEvent(const sf::Event& event, CommandQueue& commands)
 	{
 		Command fireAllow;
 		fireAllow.category = Category::Player;
-		//fireAllow.name = "fire";
 		fireAllow.action = derivedAction<Player>( [] (Player& player, sf::Time dt)
 		{
 			player.isFiring = true;
 		});
 		commands.push(fireAllow);
 	}
-	//push fire-command here
 }
 
 bool CommandManager::isRealtimeAction(Action act)
@@ -71,17 +66,14 @@ sf::Keyboard::Key  CommandManager::getAssignedKey(Action action) const
 void CommandManager::assignKey()
  {
 	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Unknown, EndRealtimeactions));
-	//mKeyBinding[sf::Keyboard::Unknown] = EndRealtimeactions;
 	mActionBinding[EndRealtimeactions].action = derivedAction<Player>(PlayerMover(0.f,0.f));
 	mActionBinding[EndRealtimeactions].category = Category::None;
 
 	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Space, Jump));
-	//mKeyBinding[sf::Keyboard::Space] = Jump;
 	mActionBinding[Jump].action = derivedAction<Player>(PlayerJump(0.f, 10.f));	
 	mActionBinding[Jump].category = Category::Player;
 
 	mKeyBinding.insert(keyActionMap::value_type(sf::Keyboard::Q, ChangeWeapon));
-	//mKeyBinding[sf::Keyboard::Space] = Jump;
 	mActionBinding[ChangeWeapon].action = derivedAction<Player>(PlayerChangeWeapon());	
 	mActionBinding[ChangeWeapon].category = Category::Player;
 

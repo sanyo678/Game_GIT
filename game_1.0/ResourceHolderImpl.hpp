@@ -15,6 +15,5 @@ Resource& ResourceHolder<Resource, Identifier>::get(Identifier id) const
 {
 	auto found = mResourceMap.find(id);//поиск (возвращает std::pair<K, T>)
 	assert(found != mResourceMap.end());//проверка поиска
-	
 	return *found->second;//возврат Resource
 }

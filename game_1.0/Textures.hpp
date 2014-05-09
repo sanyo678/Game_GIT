@@ -1,6 +1,4 @@
 #pragma once
-//#include "ResourceHolder.hpp"
-//#include "SFML/Graphics.hpp"
 
 namespace Textures
 {
@@ -8,8 +6,8 @@ namespace Textures
 	{
 		Player,
 		Ground,
-		TNT,       //--------------------
-		Bullet,    // Текстуры снарядов
+		TNT,      
+		Bullet,
 		Missle,
 		Sky,
 		Enemy1,

@@ -1,7 +1,4 @@
 #pragma once
-//#include "SFML/System.hpp"
-//#include "Ground.hpp"
-//#include "SceneNode.hpp"
 
 
 class Camera
@@ -16,6 +13,5 @@ public:
 
 private:
 	SceneNode*			target;
-	//World*				world;
 };
 

@@ -45,7 +45,6 @@ Projectile::Projectile(Type type, b2World* _pWorld, b2Vec2 pos, b2Vec2 dir, cons
 	typedef float positiveAngle;
 	positiveAngle getPositiveAngle(b2Vec2 a, b2Vec2 b);	
 
-	 //remove this to child class
 	b2Vec2 missleVel = projBody->GetLinearVelocity();
 		float a = projBody->GetAngle();
 		if (missleVel.x != 0 || missleVel.y !=0)
@@ -62,8 +61,9 @@ Projectile::Projectile(Type type, b2World* _pWorld, b2Vec2 pos, b2Vec2 dir, cons
 	setRotation(180 - (rotation)*57.7);
 
 	if (position.x > 200 && position.x < 0 && position.y < 0 && position.y > 74)
+	{
 		isDead = true;
-
+	}
 	if (isDead && mType == Type::Missle)
 	{
 		QueryCallback qc;
@@ -73,6 +73,11 @@ Projectile::Projectile(Type type, b2World* _pWorld, b2Vec2 pos, b2Vec2 dir, cons
 		aabb.lowerBound = lower;
 		aabb.upperBound = upper;
 		pWorld -> QueryAABB(&qc, aabb); 
+	}
+
+	if (isDead)
+	{
+		pWorld -> DestroyBody(projBody)	;
 	}
 
  }
@@ -86,5 +91,4 @@ Projectile::Projectile(Type type, b2World* _pWorld, b2Vec2 pos, b2Vec2 dir, cons
 		newExplosion->setPosition(b2ToSfmlVec(position).x,b2ToSfmlVec(position).y);
 		expHolder->attachChild(std::move(exp));
 	 }
-	 pWorld -> DestroyBody(projBody);
  }

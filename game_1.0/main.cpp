@@ -1,5 +1,3 @@
-//#include <exception>
-//#include <iostream>
 #include "headers.hpp"
 
 int main()
@@ -11,7 +9,16 @@ int main()
 	}
 	catch (std::exception& e)
 	{
-		std::cout << "\nEXCEPTION: " << e.what() << std::endl;
-		system("pause");
+		MessageBox(NULL,e.what(),"ERROR",MB_OK);
+	}
+	catch (double result)
+	{
+		std::string report("You lose LOL\n\n\nResult:  ");
+		report += std::to_string(result);
+		MessageBox(NULL, report.c_str(), "GAME OVER", MB_OK);
+	}
+	catch (...)
+	{
+		MessageBox(NULL, "Unexpected problem", "ERROR",	MB_OK);
 	}
 }

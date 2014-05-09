@@ -1,4 +1,5 @@
 #pragma once
+
 class QueryCallback : public b2QueryCallback
 {
 public:

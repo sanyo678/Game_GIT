@@ -1,4 +1,5 @@
 #pragma once
+
 class ContactListener : public b2ContactListener
 {
 public:

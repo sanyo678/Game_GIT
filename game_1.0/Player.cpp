@@ -41,7 +41,7 @@ Player::Player(const b2Vec2 spawnPos, const TextureHolder& textures, b2World* _p
 	boxCircleFixtureDef.friction=3;
 	body->CreateFixture(&boxCircleFixtureDef);
 
-	onFloor=0;//сделать false после обработки столкновений
+	onFloor=0;
 	body->SetUserData( this );
 
 	//SFML part
@@ -54,6 +54,7 @@ Player::Player(const b2Vec2 spawnPos, const TextureHolder& textures, b2World* _p
 	fonts.load(Fonts::main, "media/Fonts/Washington.ttf");
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(pWorld, fonts, ""));
 	mHealthDisplay = healthDisplay.get();
+	mHealthDisplay->setPosition(-70,-120);
 	attachChild(std::move(healthDisplay));
 
 	fireCommand.category = Category::Player;
@@ -78,12 +79,16 @@ void Player::updateCurrent(sf::Time dt)
 	updateFiringDirection();
 
 	mHealthDisplay->setString(std::to_string(hp) + " HP");
-	mHealthDisplay->setPosition(-70,-120);
 
 	if (isHurting)
 		hp-=hurtVel*dt.asSeconds();
 	if (hp<=0)
 		isDead = true;
+
+	if (isDead)
+	{
+		throw isDead;
+	}
 
 	body -> ApplyLinearImpulse(explosionImpulse, body->GetWorldCenter(), true);
 	explosionImpulse = b2Vec2(0,0);
@@ -106,8 +111,6 @@ void Player::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)	//p.164
 	countdown-=dt.asSeconds();
 	if (isFiring && countdown<0.0f)
 	{
-		/*while (commands.mQueue.front().name == "fire")
-			commands.pop();*/
 		commands.push(fireCommand);
 		isFiring = false;
 		countdown = projTable[currentProj].countdown;
@@ -133,9 +136,14 @@ b2Vec2 Player::getB2Position()
 	return body->GetPosition();
 }
 
-Player::~Player()
+void Player::destroyPhysBody()
 {
 	pWorld -> DestroyBody(body);
+}
+
+
+Player::~Player()
+{
 }
 
  

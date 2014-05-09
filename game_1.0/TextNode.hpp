@@ -8,5 +8,6 @@ public:
 							~TextNode(void);
 
 	sf::Text				mText;
+	double					lifetime;
 };
 

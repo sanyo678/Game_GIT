@@ -25,7 +25,6 @@ Enemy::Enemy(b2World* _pworld, b2Vec2 spawnPos, const TextureHolder& textures)
 	b2FixtureDef CircleFixtureDef;
 	CircleFixtureDef.shape = &circleShape;
 	CircleFixtureDef.density = 200;
-	//CircleFixtureDef.friction=3;
 	body->CreateFixture(&CircleFixtureDef);
 	body -> SetUserData(this);
 	//SFML part
@@ -60,7 +59,6 @@ void Enemy::updateCurrent(sf::Time dt)
 	setPosition(b2ToSfmlVec(position)-sf::Vector2f(0,0));
 	if (playerPos.x < position.x)
 	{
-		//body -> ApplyLinearImpulse( b2Vec2(-200,0), body->GetWorldCenter(), true );
 		b2Vec2 vel = body->GetLinearVelocity();
 		float velChange = -7 - vel.x;
 		float impulse = body->GetMass() * velChange;
@@ -68,7 +66,6 @@ void Enemy::updateCurrent(sf::Time dt)
 	}
 	else
 	{
-		//body -> ApplyLinearImpulse( b2Vec2(200,0), body->GetWorldCenter(), true );
 		b2Vec2 vel = body->GetLinearVelocity();
 		float velChange = 7 - vel.x;
 		float impulse = body->GetMass() * velChange;
@@ -90,6 +87,10 @@ void Enemy::updateCurrent(sf::Time dt)
 
 	body -> ApplyLinearImpulse(10*explosionImpulse, body->GetWorldCenter(), true);
 	explosionImpulse = b2Vec2(0,0);
+	if (isDead)
+	{
+		pWorld -> DestroyBody(body);
+	}
 }
 
 unsigned int Enemy::getCategory() const
@@ -99,5 +100,4 @@ unsigned int Enemy::getCategory() const
 
 Enemy::~Enemy(void)
 { 
-	pWorld -> DestroyBody(body);
 }

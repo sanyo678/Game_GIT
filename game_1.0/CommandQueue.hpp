@@ -1,6 +1,5 @@
 #pragma once
-//#include "Command.hpp"
-//#include <queue> //для std::queue<>
+
 class CommandQueue
 {
 public:

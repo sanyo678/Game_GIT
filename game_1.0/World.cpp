@@ -10,7 +10,7 @@ World::World(sf::RenderWindow& window):
 		4097.0f,
 		705.0f),
 	mSpawnPosition(
-		20,
+		120,
 		55),
 	mPlayer(nullptr),
 	mCamera(new Camera( sf::View() )),
@@ -22,6 +22,7 @@ World::World(sf::RenderWindow& window):
 	mCamera->view.setCenter(b2ToSfmlVec(mSpawnPosition).x,b2ToSfmlVec(mSpawnPosition).y);
 	mCamera->viewCenter = sf::Vector2f(b2ToSfmlVec(mSpawnPosition).x,b2ToSfmlVec(mSpawnPosition).y);
 	mWindow.setView(mCamera->view);
+	fonts.load(Fonts::main, "media/Fonts/Washington.ttf");
 	physWorld->SetContactListener(&listener);
 	loadTextures();
 	buildScene();
@@ -58,10 +59,10 @@ void World::buildScene()
 	mGround->setPosition(0.0f, 1000.0f);
 	mSceneLayers[Background]->attachChild(std::move(ground));
 
-	/*std::unique_ptr<Enemy> enemy(new Enemy(physWorld, b2Vec2(30,50), mTextures));
-	Enemy* newEnemy = enemy.get();
-	newEnemy->setPosition(b2ToSfmlVec(b2Vec2(30,50)).x,b2ToSfmlVec(b2Vec2(30,50)).y);
-	mSceneLayers[Frontside]->attachChild(std::move(enemy));*/
+	std::unique_ptr<TextNode> timer(new TextNode(physWorld, fonts, std::to_string(0.0)));
+	mTimer = timer.get();
+	mTimer->setPosition(-920,-700);
+	mPlayer->attachChild(std::move(timer));
 
 	mCamera->setTarget(mPlayer);
 }
@@ -69,7 +70,7 @@ void World::buildScene()
 void World::draw()
 {
 	mWindow.setView(mCamera->view);
-	mWindow.draw(mSceneGraph);	//Draw a drawable(!) object to the render-target(смотри sfml-dev.org)	с учетом view
+	mWindow.draw(mSceneGraph);//с учетом view
 }
 
 void World::addEnemy()
@@ -87,6 +88,9 @@ void World::update(sf::Time dt)
 {   
 	mPlayer -> checkProjectileLaunch(dt, mCommandQueue);//проверка - можно ли стрелять
 
+	mTimer->lifetime += dt.asSeconds();
+	mTimer->setString(std::to_string(mTimer->lifetime));
+
 	while (!mCommandQueue.isEmpty())   
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);		
 	
@@ -101,8 +105,14 @@ void World::update(sf::Time dt)
 	//-------------------
 	physWorld->Step(1.0f / 60.0f, 3 , 1);
 	//-------------------
-	mSceneGraph.update(dt);
-
+	try
+	{
+		mSceneGraph.update(dt);
+	}
+	catch (bool)
+	{
+		throw mTimer->lifetime;
+	}
 	mSceneGraph.removeDead();
 }
 
@@ -113,8 +123,7 @@ CommandQueue& World::getCommandQueue()
 
 World::~World()
 {
-	//delete mPlayer;
-	delete mCamera;
 	delete physWorld;
+	delete mCamera;
 }
 

@@ -1,7 +1,5 @@
 #include "headers.hpp"
 
-
-
 SceneNode::SceneNode(b2World* _pWorld)
 	: mParent(nullptr),
 	pWorld(_pWorld),

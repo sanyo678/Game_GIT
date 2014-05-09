@@ -18,10 +18,7 @@ Wreck::Wreck(b2World* _pWorld, const b2Vec2 spawnPos, const TextureHolder& textu
 	b2FixtureDef CircleFixtureDef;
 	CircleFixtureDef.shape = &circleShape;
 	CircleFixtureDef.density = 1000;
-	//CircleFixtureDef.friction=3;
 	body->CreateFixture(&CircleFixtureDef);
-
-	//srand(GetTickCount());
 
 	body -> SetUserData(this);
 	body->ApplyLinearImpulse( b2Vec2(rand()%2000 - 1000,rand()%2000 - 1000), body->GetWorldCenter(), false );
@@ -49,13 +46,15 @@ void Wreck::updateCurrent(sf::Time dt)
 	if (lifetime>4 && t.asSeconds() > lifetime)
 	{
 		isDead = true;
+		pWorld -> DestroyBody(body);
 	}
-
-	body -> ApplyLinearImpulse(explosionImpulse, body->GetWorldCenter(), true);
-	explosionImpulse = b2Vec2(0,0);
+	else
+	{
+		body -> ApplyLinearImpulse(explosionImpulse, body->GetWorldCenter(), true);
+		explosionImpulse = b2Vec2(0,0);
+	}
 }
 
 Wreck::~Wreck(void)
 {
-	pWorld -> DestroyBody(body);
 }

@@ -1,5 +1,4 @@
 #pragma once
-//#include "headers.hpp"
 
 template <typename GameObject, typename Function>
 std::function<void(SceneNode&, sf::Time)>    derivedAction(Function fn)

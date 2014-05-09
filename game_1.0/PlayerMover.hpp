@@ -1,9 +1,5 @@
 #pragma once
 
-//#include "Player.hpp"
-// #include "convertions.hpp"
-
-
 struct PlayerMover
 {
 					PlayerMover(float vx, float vy); 

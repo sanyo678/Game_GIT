@@ -1,7 +1,5 @@
 #include "headers.hpp"
-//#include <iostream>
-//#include <fstream>	 
-//#include <math.h>
+
 typedef float positiveAngle;
 
 b2Vec2 rotateVec(b2Vec2, float);
@@ -39,17 +37,6 @@ Ground::Ground(const TextureHolder& textures, b2World* _pWorld, SceneNode* _wrec
 	//SFML part
 	mSky.setPosition(0,-970);
 	background.setPosition(0,20);
-	/*rTexture.create(9997,1725);
-	rTexture.clear(sf::Color::Black);
-	rTexture.draw(background);
-
-	for (auto itr = mHoles.begin(); itr != mHoles.end(); ++itr)
-	{
-		rTexture.draw(itr->sh);
-	}
-
-	rTexture.display();
-	mSprite = sf::Sprite(rTexture.getTexture());*/
 	srand(GetTickCount());
 }
 
@@ -158,8 +145,6 @@ Ground::point::point()
 
 void Ground::drawCurrent(sf::RenderTarget& target, sf::RenderStates states)	  const
 {
-	//target.draw(mSprite, states);
-	
 	target.draw(background, states);
 	target.draw(mSky, states);
 	for (auto i = mHoles.begin(); i != mHoles.end(); i++)
@@ -335,20 +320,13 @@ void Ground::explosion(b2Vec2 center, float radius)
 	newHoles.push_back(hole(radius, center));
 
 	toReBuild = true;
+}
 
-	/*rTexture.clear(sf::Color::Black);
-	rTexture.draw(background);
-
-	for (auto itr = mHoles.begin(); itr != mHoles.end(); ++itr)
-	{
-		rTexture.draw(itr->sh);
-	}
-
-	rTexture.display();
-	mSprite = sf::Sprite(rTexture.getTexture());*/
+void Ground::destroyPhysBody()
+{
+	pWorld -> DestroyBody(groundBody);
 }
 
 Ground::~Ground(void)
 {
-//	pWorld -> DestroyBody(groundBody);
 }
